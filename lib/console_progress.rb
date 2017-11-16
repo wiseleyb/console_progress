@@ -36,6 +36,8 @@ module ConsoleProgress
 
       @times << @step_time
       @avg_time = @times.reduce(0, :+) / @times.size
+      @times = [@avg_time] if @times.size % 100 == 0
+
       steps_left = @steps - @step
       @step = current_step + 1
 
