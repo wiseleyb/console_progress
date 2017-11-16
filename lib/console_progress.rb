@@ -35,8 +35,9 @@ module ConsoleProgress
       @elapsed_time = seconds_to_time(t - @start_time)
 
       @times << @step_time
-      @avg_time = @times.reduce(0, :+) / @times.size
-      @times = [@avg_time] if @times.size % 100 == 0
+      asum = @times.reduce(0, :+)
+      @avg_time =  asum / @times.size
+      @times = [asum] if @times.size % 100 == 0
 
       steps_left = @steps - @step
       @step = current_step + 1
