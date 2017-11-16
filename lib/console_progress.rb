@@ -58,6 +58,11 @@ module ConsoleProgress
       out
     end
 
+    def put_if(limit)
+      out = progress
+      puts out if @step % limit == 0
+    end
+
     def seconds_to_time(t)
       mm, ss = t.divmod(60)
       hh, mm = mm.divmod(60)
@@ -79,8 +84,8 @@ module ConsoleProgress
     def self.example2
       eta = ConsoleProgress::ETA.new(100)
       eta.start
-      100.times do |i|
-        puts eta.progress(current_step: i) if i % 10 == 0
+      100.times do
+        eta.put_if(10)
         sleep 1
       end
     end

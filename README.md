@@ -42,8 +42,8 @@ You can also do it every 10 steps by doing something like this:
 ```
 prog = ConsoleProgress::ETA.new(100)
 prog.start
-100.times do |i|
-  puts prog.progress(current_step: i) if i % 10 == 0
+100.times do
+  eta.put_if(10)
   sleep 2
 end
 ```
