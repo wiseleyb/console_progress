@@ -63,7 +63,7 @@ module ConsoleProgress
       hh, mm = mm.divmod(60)
       dd, hh = hh.divmod(24)
       [dd, hh, mm, ss].delete_if {|r| r == 0}
-        .map(&:to_i)
+        .map {|r| '%02d' % r.to_i}
         .join(':')
     end
 
