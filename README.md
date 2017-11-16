@@ -21,9 +21,9 @@ Or install it yourself as:
 ## Usage
 
 ```ruby
-prog = ConsoleProgress::ETA.new(5)
+prog = ConsoleProgress::ETA.new(100)
 prog.start
-5.times do
+100.times do
   puts prog.progress
   sleep 2
 end
@@ -31,11 +31,11 @@ end
 
 Would output something like:
 ```
-ETA: 1/5 Time Left 0.00h or 0.00m Took: 0.00s Avg: 0.00s
-ETA: 2/5 Time Left 0.00h or 0.07m Took: 2.00s Avg: 1.00s
-ETA: 3/5 Time Left 0.00h or 0.07m Took: 2.00s Avg: 1.34s
-ETA: 4/5 Time Left 0.00h or 0.05m Took: 2.00s Avg: 1.50s
-ETA: 5/5 Time Left 0.00h or 0.03m Took: 2.00s Avg: 1.60s
+ETA: 1/100 Remainng: 0 Took: 0.00s Avg: 0.00s Elapsed: 0
+ETA: 2/100 Remainng: 1:39 Took: 2.00s Avg: 1.00s Elapsed: 2
+ETA: 3/100 Remainng: 2:10 Took: 2.00s Avg: 1.33s Elapsed: 4
+ETA: 4/100 Remainng: 2:25 Took: 2.00s Avg: 1.50s Elapsed: 6
+...
 ```
 
 Initialize with `number of steps`. Start it. Call `.progress` to move up a step.

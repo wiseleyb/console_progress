@@ -4,8 +4,8 @@ module ConsoleProgress
   class ETA
     ATTR = [:steps, :step, :step_time, :times,
             :avg_time, :format, :start_time,
-            :hours, :minutes, :seconds,
-            :message_prefix]
+            :seconds, :message_prefix,
+            :elapsed_time, :time_left]
 
     attr_accessor *ATTR
 
@@ -14,8 +14,9 @@ module ConsoleProgress
       @format = format
       @message_prefix = 'ETA'
       @format ||= "{{message_prefix}}: {{step}}/{{steps}} "\
-                  "Time Left {{hours}}h or {{minutes}}m "\
-                  "Took: {{step_time}}s Avg: {{avg_time}}s"
+                  "Remainng: {{time_left}} "\
+                  "Took: {{step_time}}s Avg: {{avg_time}}s "\
+                  "Elapsed: {{elapsed_time}}"
       @step = 0
       @times = []
     end
@@ -29,13 +30,17 @@ module ConsoleProgress
       @message_prefix = msg if msg
       t = Time.now
       @step_time = t - @step_time_start
+
+      @elapsed_time = seconds_to_time(Time.now - @start_time)
+
       @times << @step_time
       @avg_time = @times.reduce(0, :+) / @times.size
       steps_left = @steps - @step
       @step = current_step + 1
+
       @seconds = steps_left * @avg_time
-      @minutes = '%.2f' % (@seconds / 60)
-      @hours = '%.2f' % (@seconds / 60 / 60)
+      @time_left = seconds_to_time(@seconds)
+
       @step_time = '%.2f' % @step_time
       @avg_time = '%.2f' % @avg_time
       @step_time_start = t
@@ -48,6 +53,24 @@ module ConsoleProgress
         out.gsub!("{{#{m}}}", send(m).to_s)
       end
       out
+    end
+
+    def seconds_to_time(t)
+      mm, ss = t.divmod(60)
+      hh, mm = mm.divmod(60)
+      dd, hh = hh.divmod(24)
+      [dd, hh, mm, ss].delete_if {|r| r == 0}
+        .map(&:to_i)
+        .join(':')
+    end
+
+    def self.example
+      eta = ConsoleProgress::ETA.new(100)
+      eta.start
+      100.times do
+        puts eta.progress
+        sleep 2
+      end
     end
   end
 end
