@@ -19,6 +19,7 @@ module ConsoleProgress
                   "Elapsed: {{elapsed_time}}"
       @step = 0
       @times = []
+      start
     end
 
     def start
@@ -31,7 +32,7 @@ module ConsoleProgress
       t = Time.now
       @step_time = t - @step_time_start
 
-      @elapsed_time = seconds_to_time(Time.now - @start_time)
+      @elapsed_time = seconds_to_time(t - @start_time)
 
       @times << @step_time
       @avg_time = @times.reduce(0, :+) / @times.size
@@ -70,6 +71,15 @@ module ConsoleProgress
       100.times do
         puts eta.progress
         sleep 2
+      end
+    end
+
+    def self.example2
+      eta = ConsoleProgress::ETA.new(100)
+      eta.start
+      100.times do |i|
+        puts eta.progress(current_step: i) if i % 10 == 0
+        sleep 1
       end
     end
   end
