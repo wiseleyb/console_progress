@@ -14,7 +14,7 @@ module ConsoleProgress
       @format = format
       @message_prefix = 'ETA'
       @format ||= "{{message_prefix}}: {{step}}/{{steps}} "\
-                  "Remainng: {{time_left}} "\
+                  "Remaining: {{time_left}} "\
                   "Took: {{step_time}}s Avg: {{avg_time}}s "\
                   "Elapsed: {{elapsed_time}}"
       @step = 0
