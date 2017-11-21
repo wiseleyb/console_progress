@@ -35,9 +35,7 @@ module ConsoleProgress
       @elapsed_time = seconds_to_time(t - @start_time)
 
       @times << @step_time
-      asum = @times.reduce(0, :+)
-      @avg_time =  asum / @times.size
-      @times = [asum] if @times.size % 100 == 0
+      @avg_time =  @times.reduct(0, :+) / @times.size
 
       steps_left = @steps - @step
       @step = current_step + 1
@@ -77,8 +75,8 @@ module ConsoleProgress
       eta = ConsoleProgress::ETA.new(100)
       eta.start
       100.times do
-        puts eta.progress
         sleep 2
+        puts eta.progress
       end
     end
 
@@ -86,8 +84,8 @@ module ConsoleProgress
       eta = ConsoleProgress::ETA.new(100)
       eta.start
       100.times do
-        eta.put_if(10)
         sleep 1
+        eta.put_if(10)
       end
     end
   end
