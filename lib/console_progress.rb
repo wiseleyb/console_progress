@@ -9,7 +9,7 @@ module ConsoleProgress
 
     attr_accessor *ATTR
 
-    def initialize(steps, format: nil)
+    def initialize(steps, format: nil, current_step: 0)
       @steps = steps
       @format = format
       @message_prefix = 'ETA'
@@ -17,7 +17,7 @@ module ConsoleProgress
                   "Remaining: {{time_left}} "\
                   "Took: {{step_time}}s Avg: {{avg_time}}s "\
                   "Elapsed: {{elapsed_time}}"
-      @step = 0
+      @step = current_step
       @times = []
       start
     end
@@ -35,7 +35,8 @@ module ConsoleProgress
       @elapsed_time = seconds_to_time(t - @start_time)
 
       @times << @step_time
-      @avg_time =  @times.reduce(0, :+) / @times.size
+      # @avg_time =  @times.reduce(0, :+) / @times.size
+      @avg_time = median(@times)
 
       steps_left = @steps - @step
       @step = current_step + 1
@@ -69,6 +70,13 @@ module ConsoleProgress
       [dd, hh, mm, ss].delete_if {|r| r == 0}
         .map {|r| '%02d' % r.to_i}
         .join(':')
+    end
+
+    # from https://stackoverflow.com/posts/14859546/revisions
+    def median(array)
+      sorted = array.sort
+      len = sorted.length
+      (sorted[(len - 1) / 2] + sorted[len / 2]) / 2.0
     end
 
     def self.example
